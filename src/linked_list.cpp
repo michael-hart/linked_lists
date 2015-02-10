@@ -9,23 +9,25 @@
 
 #include "linked_list.h"
 
-linked_list::linked_list(int data) {
-	start = new list_node(data);
+linked_list::linked_list() {
+	start = NULL;
 }
 
 linked_list::~linked_list() {
 	list_node *previous, *current;
+	if (start == NULL) {
+		return;
+	}
 	if (start->next == NULL) {
 		delete start;
 	} else {
 		previous = start;
 		current = start->next;
-		while (current->next != NULL) {
+		while (current != NULL) {
 			delete previous;
 			previous = current;
 			current = current->next;
 		}
-		delete current;
 	}
 
 }
@@ -33,9 +35,16 @@ linked_list::~linked_list() {
 void linked_list::append_data(int data) {
 	list_node *current;
 	current = start;
+
+	// If list is empty, add as first element
+	if (start == NULL) {
+		start = new list_node(data);
+		return;
+	}
+
 	// Traverse to end of list
 	while (current->next != NULL) {
-		current = &(*(current->next));
+		current = current->next;
 	}
 
 	// Create node and add
@@ -53,7 +62,8 @@ void linked_list::remove_data(int data) {
 			if (current == start) {
 				// Requested delete of start node; special case
 				if (this->length_list() == 1) {
-					cout << "Cannot delete only entry in list" << endl;
+					delete start;
+					start = NULL;
 				} else {
 					start = current->next;
 					delete current;
@@ -63,8 +73,8 @@ void linked_list::remove_data(int data) {
 				previous->next = current->next;
 				delete current;
 			}
+			// If we've deleted data, return as work is done
 			return;
-
 		}
 
 		// Traverse list, where previous tracks one node behind current
@@ -72,9 +82,13 @@ void linked_list::remove_data(int data) {
 		current = current->next;
 
 	} while (current != NULL);
+
+	// No op; if data has not been found, do nothing
+
 }
 
 void linked_list::print_list(string out_path) {
+
 	list_node *current;
 	current = start;
 
@@ -82,6 +96,12 @@ void linked_list::print_list(string out_path) {
 	out_handle.open(out_path.c_str());
 	if (!out_handle.is_open()) {
 		cout << "Failed to open file to print list" << endl;
+		out_handle.close();
+		return;
+	}
+
+	if (start == NULL) {
+		out_handle << "List is empty" << endl;
 		out_handle.close();
 		return;
 	}
@@ -98,6 +118,9 @@ void linked_list::print_list(string out_path) {
 }
 
 int linked_list::length_list() {
+	if (start == NULL) {
+		return 0;
+	}
 	int current_length = 1;
 	list_node *current;
 	current = start;

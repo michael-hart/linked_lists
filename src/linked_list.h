@@ -29,7 +29,7 @@ private:
 	list_node *start;
 
 public:
-	linked_list(int data);
+	linked_list();
 	~linked_list();
 	void append_data(int data);
 	void remove_data(int data);
