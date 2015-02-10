@@ -69,6 +69,22 @@ int main(int argc, char **argv) {
 	cout << "Minimum of list is " << mylist->minimum() << endl;
 	mylist->print_list("out4.txt");
 
+	// Append 40, 60, 90, 135
+	for (int i = 40; i < 140; i += i/2) {
+		mylist->append(i);
+	}
+
+	// Length should be 17
+	cout << "Length of list is " << mylist->length() << endl;
+	mylist->print_list("out5.txt");
+
+	mylist->smooth(5);
+	// Length should be 42
+	cout << "Length of smoothed list is " << mylist->length() << endl;
+	// List should be: 2, 4, 5, 6, 7, 8, 10, 10, 12, 14, 16, 18, 20, 25, 30, 35, 40, 45, 50, 55, 60, 64, 68, 72,
+	// 75, 79, 83, 87, 90, 93, 96, 99, 102, 105, 108, 113, 116, 119, 124, 127, 130, 135
+	mylist->print_list("out6.txt");
+
 	delete mylist;
 
 	cout << "Added items and attempted to print list. Exiting..." << endl;

@@ -239,3 +239,28 @@ int linked_list::minimum() {
 		return minimum;
 	}
 }
+
+void linked_list::smooth(int max_difference) {
+	list_node *previous, *current;
+	int difference = 0;
+	bool limit_broken = true;
+	while (limit_broken) {
+		current = start->next;
+		previous = start;
+		limit_broken = false;
+
+		while (current != NULL) {
+			difference = abs(current->data - previous->data);
+			if (difference > max_difference) {
+				limit_broken = true;
+				previous->next = new list_node( round(difference/2.0) + min(current->data, previous->data) );
+				previous = previous->next;
+				previous->next = current;
+			}
+
+			previous = current;
+			current = current->next;
+		}
+
+	}
+}

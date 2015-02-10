@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 using namespace std;
 
@@ -39,6 +40,7 @@ public:
 	void print_list(string out_path);
 	int length();
 	int minimum();
+	void smooth(int max_difference);
 };
 
 
