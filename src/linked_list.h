@@ -32,7 +32,9 @@ public:
 	linked_list(int data);
 	~linked_list();
 	void append_data(int data);
+	void remove_data(int data);
 	void print_list(string out_path);
+	int length_list();
 };
 
 

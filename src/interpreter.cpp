@@ -25,6 +25,10 @@ int main(int argc, char **argv) {
 	mylist->append_data(40);
 	mylist->append_data(60);
 	mylist->append_data(13);
+	mylist->append_data(29);
+	mylist->remove_data(60);
+	// Length should be 4
+	cout << "Length of list is " << mylist->length_list() << endl;
 	mylist->print_list("out.txt");
 	delete mylist;
 
