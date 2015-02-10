@@ -23,23 +23,23 @@ int main(int argc, char **argv) {
 
 	linked_list *mylist = new linked_list();
 	// Add 4 data points
-	mylist->append_data(20);
-	mylist->append_data(13);
-	mylist->append_data(31);
-	mylist->append_data(29);
+	mylist->append(20);
+	mylist->append(13);
+	mylist->append(31);
+	mylist->append(29);
 	// Delete start node, a middle node, and a non-existent node
-	mylist->remove_data(20);
-	mylist->remove_data(90);
-	mylist->remove_data(31);
+	mylist->remove(20);
+	mylist->remove(90);
+	mylist->remove(31);
 	// Length should be 2
-	cout << "Length of list is " << mylist->length_list() << endl;
+	cout << "Length of list is " << mylist->length() << endl;
 	mylist->print_list("out.txt");
 
 	// Delete the rest of the data
-	mylist->remove_data(13);
-	mylist->remove_data(29);
+	mylist->remove(13);
+	mylist->remove(29);
 	// Length should be 0
-	cout << "Length of list is " << mylist->length_list() << endl;
+	cout << "Length of list is " << mylist->length() << endl;
 	mylist->print_list("out1.txt");
 
 	delete mylist;

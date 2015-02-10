@@ -27,14 +27,17 @@ private:
 		}
 	};
 	list_node *start;
+	bool sorted;
 
 public:
 	linked_list();
 	~linked_list();
-	void append_data(int data);
-	void remove_data(int data);
+	void append(int data);
+	void insert(int data);
+	void remove(int data);
+	void sort();
 	void print_list(string out_path);
-	int length_list();
+	int length();
 };
 
 

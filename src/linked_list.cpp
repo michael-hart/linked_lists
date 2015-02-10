@@ -11,6 +11,7 @@
 
 linked_list::linked_list() {
 	start = NULL;
+	sorted = false;
 }
 
 linked_list::~linked_list() {
@@ -32,7 +33,7 @@ linked_list::~linked_list() {
 
 }
 
-void linked_list::append_data(int data) {
+void linked_list::append(int data) {
 	list_node *current;
 	current = start;
 
@@ -51,7 +52,43 @@ void linked_list::append_data(int data) {
 	current->next = new list_node(data);
 }
 
-void linked_list::remove_data(int data) {
+void linked_list::insert(int data) {
+	list_node *current, *previous;
+
+	// If list is empty, add as first node
+	if (start == NULL) {
+		start = new list_node(data);
+	}
+
+	if (!sorted) {
+		// If not already sorted, append the data
+		append(data);
+	} else {
+		// If sorted, check for the first node with data larger than the argument
+		current = start;
+		while (current != NULL) {
+			if (current->data > data) {
+				// If the first node is larger than the argument, insert at the front
+				if (current == start) {
+					current = start->next;
+					start = new list_node(data);
+					start->next = current;
+				} else {
+					// If in the middle previous must point to new node
+					previous->next = new list_node(data);
+					previous = previous->next;
+					previous->next = current;
+				}
+				return;
+			}
+
+			previous = current;
+			current = current->next;
+		}
+	}
+}
+
+void linked_list::remove(int data) {
 	list_node *current;
 	list_node *previous;
 	current = start;
@@ -61,7 +98,7 @@ void linked_list::remove_data(int data) {
 			// Found node to delete
 			if (current == start) {
 				// Requested delete of start node; special case
-				if (this->length_list() == 1) {
+				if (this->length() == 1) {
 					delete start;
 					start = NULL;
 				} else {
@@ -117,7 +154,7 @@ void linked_list::print_list(string out_path) {
 	out_handle.close();
 }
 
-int linked_list::length_list() {
+int linked_list::length() {
 	if (start == NULL) {
 		return 0;
 	}
