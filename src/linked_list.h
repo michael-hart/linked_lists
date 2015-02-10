@@ -38,6 +38,7 @@ public:
 	void sort();
 	void print_list(string out_path);
 	int length();
+	int minimum();
 };
 
 

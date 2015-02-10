@@ -217,3 +217,25 @@ int linked_list::length() {
 	return current_length;
 }
 
+int linked_list::minimum() {
+	list_node *current;
+
+	// If list is empty, return 0 for lack of anything better
+	if (start==NULL) {
+		return 0;
+	}
+	// If list is sorted or contains one item, the min is the first item
+	if (sorted || length() == 1) {
+		return start->data;
+	} else {
+		int minimum = start->data;
+		current = start->next;
+		while (current != NULL) {
+			if (current->data < minimum) {
+				minimum = current->data;
+			}
+			current = current->next;
+		}
+		return minimum;
+	}
+}

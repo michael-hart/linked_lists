@@ -43,7 +43,11 @@ int main(int argc, char **argv) {
 	mylist->print_list("out1.txt");
 
 	mylist->insert(10);
+	// Should be 10
+	cout << "Minimum of list is " << mylist->minimum() << endl;
 	mylist->insert(5);
+	// Should be 5
+	cout << "Minimum of list is " << mylist->minimum() << endl;
 	mylist->sort();
 	mylist->insert(7);
 	// Length should be 3
@@ -57,7 +61,12 @@ int main(int argc, char **argv) {
 	// Length should be 13
 	cout << "Length of list is " << mylist->length() << endl;
 	mylist->print_list("out3.txt");
+	// Minimum should be 2
+	cout << "Minimum of list is " << mylist->minimum() << endl;
 	mylist->sort();
+	// 13, 2 respectively, as before sorting
+	cout << "Length of list is " << mylist->length() << endl;
+	cout << "Minimum of list is " << mylist->minimum() << endl;
 	mylist->print_list("out4.txt");
 
 	delete mylist;
