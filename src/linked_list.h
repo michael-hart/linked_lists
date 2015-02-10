@@ -33,7 +33,6 @@ public:
 	~linked_list();
 	void append_data(int data);
 	void print_list(string out_path);
-	void destroy_list();
 };
 
 
