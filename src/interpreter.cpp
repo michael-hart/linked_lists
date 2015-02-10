@@ -42,6 +42,24 @@ int main(int argc, char **argv) {
 	cout << "Length of list is " << mylist->length() << endl;
 	mylist->print_list("out1.txt");
 
+	mylist->insert(10);
+	mylist->insert(5);
+	mylist->sort();
+	mylist->insert(7);
+	// Length should be 3
+	cout << "Length of list is " << mylist->length() << endl;
+	mylist->print_list("out2.txt");
+
+	// Test with larger list contents
+	for (int i = 20; i > 0; i-=2) {
+		mylist->append(i);
+	}
+	// Length should be 13
+	cout << "Length of list is " << mylist->length() << endl;
+	mylist->print_list("out3.txt");
+	mylist->sort();
+	mylist->print_list("out4.txt");
+
 	delete mylist;
 
 	cout << "Added items and attempted to print list. Exiting..." << endl;

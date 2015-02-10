@@ -36,6 +36,8 @@ linked_list::~linked_list() {
 void linked_list::append(int data) {
 	list_node *current;
 	current = start;
+	// We are appending, so we cannot guarantee sorted data
+	sorted = false;
 
 	// If list is empty, add as first element
 	if (start == NULL) {
@@ -58,6 +60,7 @@ void linked_list::insert(int data) {
 	// If list is empty, add as first node
 	if (start == NULL) {
 		start = new list_node(data);
+		return;
 	}
 
 	if (!sorted) {
@@ -122,6 +125,52 @@ void linked_list::remove(int data) {
 
 	// No op; if data has not been found, do nothing
 
+}
+
+void linked_list::sort() {
+	// Sorting, so we can guarantee sorted data
+	sorted = true;
+	list_node *current, *previous, *temp;
+
+	// Empty or single item lists are already sorted
+	int list_length = length();
+	if (list_length < 2) {
+		return;
+	}
+
+	// Traverse the list length-1 times to ensure sorted, using bubble sort
+	for (int i = 0; i < list_length-1; i++) {
+		current = start->next;
+		previous = start;
+		while (current != NULL) {
+			if (current->data < previous->data) {
+				// Swap nodes
+				previous->next = current->next;
+				current->next = previous;
+				// Check whether the swapped value is now the start
+				if (previous == start) {
+					start = current;
+				} else {
+					// List is in the middle, so the element before previous must be set to current
+					temp = start;
+					while (temp->next != previous) {
+						// Traverse list until the node before previous
+						temp = temp->next;
+					}
+					// Set node before previous to point to current, which points to previous
+					temp->next = current;
+				}
+
+				// Set previous and current to new list positions
+				previous = current;
+				current = current->next;
+			}
+
+			previous = current;
+			current = current->next;
+
+		}
+	}
 }
 
 void linked_list::print_list(string out_path) {
