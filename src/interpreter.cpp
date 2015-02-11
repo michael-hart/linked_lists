@@ -31,9 +31,10 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
-	while (!command_handle.eof()) {
-		command_handle >> command;
-		commands.push_back(command);
+	while (getline(command_handle, command)) {
+		if (command.size()>0 && command[0] != '\r') {
+			commands.push_back(command);
+		}
 	}
 
 	command_handle.close();
@@ -59,8 +60,7 @@ int main(int argc, char **argv) {
 				cout << "Failed to open data file: "<< input_file << endl;
 				continue;
 			}
-			while (!input_handle.eof()) {
-				input_handle >> file_data_point;
+			while (input_handle >> file_data_point) {
 				mylist->append(file_data_point);
 			}
 			input_handle.close();
