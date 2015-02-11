@@ -10,84 +10,103 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "linked_list.h"
 
 using namespace std;
 
 int main(int argc, char **argv) {
+	ifstream command_handle;
+	vector<string> commands;
+	string command;
 
-//	if (argc != 2) {
-//		cout << "Program argument data file required. Exiting..." << endl;
-//		return 0;
-//	}
+	if (argc != 2) {
+		cout << "Program argument data file required. Exiting..." << endl;
+		return 0;
+	}
+
+	command_handle.open(argv[1]);
+	if (!command_handle.is_open()) {
+		cout << "Failed to open command file. Exiting..." << endl;
+		return 0;
+	}
+
+	while (!command_handle.eof()) {
+		command_handle >> command;
+		commands.push_back(command);
+	}
+
+	command_handle.close();
 
 	linked_list *mylist = new linked_list();
-	// Add 4 data points
-	mylist->append(20);
-	mylist->append(13);
-	mylist->append(31);
-	mylist->append(29);
-	// Delete start node, a middle node, and a non-existent node
-	mylist->remove(20);
-	mylist->remove(90);
-	mylist->remove(31);
-	// Length should be 2
-	cout << "Length of list is " << mylist->length() << endl;
-	mylist->print_list("out.txt");
+	int file_number = 0;
+	char input_file[20];
+	char output_file[20];
+	ifstream input_handle;
+	ofstream output_handle;
+	int file_data_point;
 
-	// Delete the rest of the data
-	mylist->remove(13);
-	mylist->remove(29);
-	// Length should be 0
-	cout << "Length of list is " << mylist->length() << endl;
-	mylist->print_list("out1.txt");
-
-	mylist->insert(10);
-	// Should be 10
-	cout << "Minimum of list is " << mylist->minimum() << endl;
-	mylist->insert(5);
-	// Should be 5
-	cout << "Minimum of list is " << mylist->minimum() << endl;
-	mylist->sort();
-	mylist->insert(7);
-	// Length should be 3
-	cout << "Length of list is " << mylist->length() << endl;
-	mylist->print_list("out2.txt");
-
-	// Test with larger list contents
-	for (int i = 20; i > 0; i-=2) {
-		mylist->append(i);
+	for (size_t i=0; i < commands.size(); i++) {
+		switch (commands[i][0]) {
+		case 'r':
+			// Input and output require the following number, so read and format strings
+			sscanf(commands[++i].c_str(), "%d", &file_number);
+			snprintf(input_file, 20, "data_%d.txt", file_number);
+			snprintf(output_file, 20, "output_%d.txt", file_number);
+			// Read in all data values
+			input_handle.open(input_file);
+			if (!input_handle.is_open()) {
+				cout << "Failed to open data file: "<< input_file << endl;
+				continue;
+			}
+			while (!input_handle.eof()) {
+				input_handle >> file_data_point;
+				mylist->append(file_data_point);
+			}
+			input_handle.close();
+			break;
+		case 's':
+			mylist->sort();
+			break;
+		case 'w':
+			mylist->print_list(output_file);
+			break;
+		case 'i':
+			sscanf(commands[++i].c_str(), "%d", &file_data_point);
+			mylist->insert(file_data_point);
+			break;
+		case 'd':
+			sscanf(commands[++i].c_str(), "%d", &file_data_point);
+			mylist->remove(file_data_point);
+			break;
+		case 'e':
+			output_handle.open(output_file, ios::app);
+			if (!output_handle.is_open()) {
+				cout << "Failed to open output file: "<< output_file << endl;
+				continue;
+			}
+			output_handle << "Number of elements in the list: " << mylist->length() << endl;
+			output_handle.close();
+			break;
+		case 'm':
+			output_handle.open(output_file, ios::app);
+			if (!output_handle.is_open()) {
+				cout << "Failed to open output file: "<< output_file << endl;
+				continue;
+			}
+			output_handle << "Minimum value: " << mylist->minimum() << endl;
+			output_handle.close();
+			break;
+		case 'a':
+			mylist->smooth(5);
+			break;
+		default:
+			cout << "Unrecognised command. Ignoring..." << endl;
+			continue;
+		}
 	}
-	// Length should be 13
-	cout << "Length of list is " << mylist->length() << endl;
-	mylist->print_list("out3.txt");
-	// Minimum should be 2
-	cout << "Minimum of list is " << mylist->minimum() << endl;
-	mylist->sort();
-	// 13, 2 respectively, as before sorting
-	cout << "Length of list is " << mylist->length() << endl;
-	cout << "Minimum of list is " << mylist->minimum() << endl;
-	mylist->print_list("out4.txt");
-
-	// Append 40, 60, 90, 135
-	for (int i = 40; i < 140; i += i/2) {
-		mylist->append(i);
-	}
-
-	// Length should be 17
-	cout << "Length of list is " << mylist->length() << endl;
-	mylist->print_list("out5.txt");
-
-	mylist->smooth(5);
-	// Length should be 42
-	cout << "Length of smoothed list is " << mylist->length() << endl;
-	// List should be: 2, 4, 5, 6, 7, 8, 10, 10, 12, 14, 16, 18, 20, 25, 30, 35, 40, 45, 50, 55, 60, 64, 68, 72,
-	// 75, 79, 83, 87, 90, 93, 96, 99, 102, 105, 108, 113, 116, 119, 124, 127, 130, 135
-	mylist->print_list("out6.txt");
 
 	delete mylist;
-
-	cout << "Added items and attempted to print list. Exiting..." << endl;
 
 	return 0;
 }

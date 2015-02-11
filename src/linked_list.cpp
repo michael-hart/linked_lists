@@ -88,6 +88,10 @@ void linked_list::insert(int data) {
 			previous = current;
 			current = current->next;
 		}
+		if (current == NULL) {
+			// Looped through without inserting, so the value must be inserted at the end.
+			previous->next = new list_node(data);
+		}
 	}
 }
 
@@ -179,7 +183,7 @@ void linked_list::print_list(string out_path) {
 	current = start;
 
 	ofstream out_handle;
-	out_handle.open(out_path.c_str());
+	out_handle.open(out_path.c_str(), ios::app);
 	if (!out_handle.is_open()) {
 		cout << "Failed to open file to print list" << endl;
 		out_handle.close();
@@ -187,19 +191,14 @@ void linked_list::print_list(string out_path) {
 	}
 
 	if (start == NULL) {
-		out_handle << "List is empty" << endl;
 		out_handle.close();
 		return;
 	}
 
-	out_handle << "List contents are as follows: " << endl;
-
-	while (current->next != NULL) {
+	while (current != NULL) {
 		out_handle << current->data << endl;
 		current = current->next;
 	}
-	out_handle << current->data << endl;
-	out_handle << "End list" << endl;
 	out_handle.close();
 }
 
