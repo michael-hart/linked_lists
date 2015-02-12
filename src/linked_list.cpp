@@ -1,19 +1,22 @@
 /**
  *
- * File: linked_list.h
+ * File: linked_list.cpp
  * Author: Michael Hart
  * Date Created: 10/02/2015
- * Description: Defines the functions and classes for a custom linked list.
+ * Description: Implements custom linked list class defined in linked_list.h
  *
  */
 
 #include "linked_list.h"
 
+// Constructor: Define empty, unsorted list
 linked_list::linked_list() {
 	start = NULL;
 	sorted = false;
 }
 
+// Destructor: Destroy each individual node in the list,
+// if not empty
 linked_list::~linked_list() {
 	list_node *previous, *current;
 	if (start == NULL) {
@@ -33,6 +36,8 @@ linked_list::~linked_list() {
 
 }
 
+// append: Iterates to the end of the list and creates a new node
+// with the given data
 void linked_list::append(int data) {
 	list_node *current;
 	current = start;
@@ -54,6 +59,8 @@ void linked_list::append(int data) {
 	current->next = new list_node(data);
 }
 
+// insert: Identical to append if the list is unsorted. If sorted, retain ascending
+// order by iterating over the list and creating a new node in the correct position
 void linked_list::insert(int data) {
 	list_node *current, *previous;
 
@@ -95,6 +102,8 @@ void linked_list::insert(int data) {
 	}
 }
 
+// remove: Searches for the first occurrence of data in the list and deletes that node.
+// Note: This retains sorted order if the list has been sorted
 void linked_list::remove(int data) {
 	list_node *current;
 	list_node *previous;
@@ -131,6 +140,8 @@ void linked_list::remove(int data) {
 
 }
 
+// sort: Sort list using bubble sort algorithm. Node pointers must be swapped instead of
+// nodes created and deleted.
 void linked_list::sort() {
 	// Sorting, so we can guarantee sorted data
 	sorted = true;
@@ -177,6 +188,7 @@ void linked_list::sort() {
 	}
 }
 
+// print_list: Opens the given output file and appends the list contents, line by line
 void linked_list::print_list(string out_path) {
 
 	list_node *current;
@@ -202,6 +214,8 @@ void linked_list::print_list(string out_path) {
 	out_handle.close();
 }
 
+// length: Iterates over list, incrementing a counter. Returns the number of nodes
+// in the list
 int linked_list::length() {
 	if (start == NULL) {
 		return 0;
@@ -216,6 +230,8 @@ int linked_list::length() {
 	return current_length;
 }
 
+// minimum: iterate over the last and return the smallest data point.
+// Note: Undesirable behaviour occurs for an empty list, where 0 is returned
 int linked_list::minimum() {
 	list_node *current;
 
@@ -239,6 +255,9 @@ int linked_list::minimum() {
 	}
 }
 
+// smooth: Given max_difference, continuously iterates over the list and inserts
+// new nodes containing the average between two consecutive nodes, if those nodes
+// contain data larger than max_difference
 void linked_list::smooth(int max_difference) {
 	list_node *previous, *current;
 	int difference = 0;
